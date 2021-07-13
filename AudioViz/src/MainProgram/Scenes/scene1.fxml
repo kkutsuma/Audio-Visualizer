@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?scenebuilder-stylesheet vista.css?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<AnchorPane fx:id="vista1" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="875.0" prefWidth="1600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MainProgram.Scenes.Scene1Controller">
+    <children>
+        <SplitPane dividerPositions="0.85" layoutX="36.0" layoutY="-2.0" orientation="VERTICAL" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <items>
+                <AnchorPane maxHeight="1.7976931348623157E308" minHeight="300.0" />
+                <AnchorPane minHeight="100.0" minWidth="0.0" prefHeight="200.0" prefWidth="160.0" SplitPane.resizableWithParent="false">
+                    <children>
+                        <AnchorPane prefHeight="28.0" prefWidth="39.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="50.0">
+                            <children>
+                                <Button fx:id="leftButton" mnemonicParsing="false" onAction="#leftButtonCheck" text="next" />
+                            </children>
+                        </AnchorPane>
+                        <AnchorPane layoutX="1489.0" layoutY="48.0" prefHeight="28.0" prefWidth="40.0" AnchorPane.bottomAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="50.0">
+                            <children>
+                                <Button mnemonicParsing="false" onAction="#nextPane" text="Next Step" AnchorPane.topAnchor="0.0" />
+                            </children>
+                        </AnchorPane>
+                        <AnchorPane layoutX="749.0" layoutY="-3.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="749.0" AnchorPane.topAnchor="0.0">
+                            <children>
+                                <Button fx:id="pause_resume_button" layoutX="21.0" layoutY="50.0" mnemonicParsing="false" onAction="#pauseButtonClick" prefWidth="100.0" text="Pause" AnchorPane.leftAnchor="0.0" />
+                            </children>
+                        </AnchorPane>
+                    </children>
+                </AnchorPane>
+            </items>
+        </SplitPane>
+    </children>
+</AnchorPane>
