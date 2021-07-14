@@ -11,4 +11,14 @@ public class MainController {
     public void setVista(Node node) {
         vistaHolder.getChildren().setAll(node);
     }
+    /*
+
+        vistaHolder.getChildren().setAll(FXMLLoader.load(SceneController.class.getResource(scenes[fxml]))
+
+            mainController.setVista(FXMLLoader.load(SceneController.class.getResource(scenes[fxml])));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+     */
 }
