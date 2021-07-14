@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.shape.Rectangle?>
 
-<BorderPane fx:id="vista2" minHeight="-Infinity" minWidth="-Infinity" prefHeight="875.0" prefWidth="1600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MainProgram.Vista2Controller">
+<BorderPane fx:id="vista2" minHeight="-Infinity" minWidth="-Infinity" prefHeight="875.0" prefWidth="1600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MainProgram.Scenes.Scene2Controller">
     <center>
         <Button mnemonicParsing="false" onAction="#previousPane" text="Button" BorderPane.alignment="CENTER" />
     </center>

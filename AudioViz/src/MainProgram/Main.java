@@ -21,12 +21,12 @@ public class Main extends Application {
         this.sceneController = SceneLoader.load();
 
         stage.setTitle("Audio Visulizer");
-
         stage.setScene(
                 createScene(
                         loadMainPane()
                 )
         );
+        stage.setResizable(false);
         stage.show();
     }
 
