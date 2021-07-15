@@ -43,7 +43,7 @@ public class Scene1Controller implements Initializable {
 
             root = FXMLLoader.load(getClass().getResource("graph.fxml"));
             graphPane.getChildren().setAll(root);
-            System.out.println("I loaded");
+            System.out.println("I loaded mediaBar.fxml &  graph.fxml");
         } catch (IOException e) {
             e.printStackTrace();
         }

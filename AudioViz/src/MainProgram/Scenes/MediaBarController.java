@@ -20,7 +20,6 @@ public class MediaBarController implements Initializable {
     public Slider timerBar;
     public Pane mediaBar;
     private Duration duration;
-    MediaBarController uniqueInstance;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
