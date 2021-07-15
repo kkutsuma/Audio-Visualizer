@@ -6,6 +6,8 @@ _Created for CU Boulder CSCI 4448 SU21 Final Project_
 
 ### Status Summary
 
+![Audio Visualizer Example](https://github.com/kkutsuma/CSCI4448_Lab6/blob/README_Images/audioVizExample.jpg)
+
 #### Work Done
 
 This past sprint has been spent prototyping and learning about JavaFX's API and creating the UI and visualizer for the application. Currently we have the visualizer created, pause and resume functions, the main scene UI, volume bar, and music time bar.
