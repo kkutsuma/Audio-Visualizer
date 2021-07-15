@@ -43,7 +43,7 @@ public class GraphController implements Initializable {
     public HBox barHolder;
     private Timeline timeline;
     ArrayList<Rectangle> listOfBars;
-    MediaPlayer player;
+    private MediaPlayer player;
     float[] prevalues;
 
     @Override
@@ -54,7 +54,7 @@ public class GraphController implements Initializable {
         player.setAudioSpectrumNumBands(10);
         prevalues = new float[10];
         player.setAudioSpectrumInterval(0.01);
-        player.setAudioSpectrumListener((a, b, c, d) -> {
+        player.setAudioSpectrumListener((a, b, c, d) -> { // (current time, durration, []magnitudes, []phases)
             updateGraph(c, d);
         });
         listOfBars = new ArrayList<Rectangle>();
@@ -63,7 +63,7 @@ public class GraphController implements Initializable {
         barHolder.getChildren().add(listOfBars.get(0));
     }
 
-    public void updateGraph(float [] c, float[] d) {
+    private void updateGraph(float [] c, float[] d) {
         // MediaPlayer player = MyMediaPlayer.getInstance().getPlayer();
         for(int i = 0; i < c.length; i++) {
             graphBars[i].setHeight((((c[i] + prevalues[i])/2) - player.getAudioSpectrumThreshold()) * 10);
