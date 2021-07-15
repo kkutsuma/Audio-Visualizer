@@ -43,7 +43,7 @@ In addition we ran into the issue that the current graph.fxml file isn't good co
 
 ### Next Sprint
 
-Next spring we need to finish up the program. Currently this includes creating the file system, file system scene, adding/removing songs, and changing songs. We also have one change that we want to make to the previous work. This is adding a strategy pattern to the visualizer. Specifically the shapes of the UI so that we can change how many shapes, the shapes color, and the shape type if we want to. We are projecting that the File Management will the most difficult part of this sprint. But because we have mostly medium's, *(look below)* we plan to have this functionality completed by 7/21
+Next spring we need to finish up the program. Currently this includes creating the file system, file system scene, adding/removing songs, and changing songs. We also have one change that we want to make to the previous work. This is adding a strategy pattern to the visualizer. Specifically the shapes of the UI so that we can change how many shapes, the shapes color, and the shape type if we want to. We are projecting that the File Management will the most difficult part of this sprint. But because we have mostly medium's, *(look below)* we plan to have this functionality completed by 7/21.
 
 *Next Sprint Checklist*
 
