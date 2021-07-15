@@ -53,6 +53,7 @@ Next spring we need to finish up the program. Currently this includes creating t
   * [S] May require creating a song class to hold song information
 * [M] Add change song functionality
 * [S] Add ability to change visualizer settings
+* [S] Add CSS & Update UI
 
 ### Class Diagram
 
