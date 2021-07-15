@@ -10,7 +10,9 @@ _Created for CU Boulder CSCI 4448 SU21 Final Project_
 
 This past sprint has been spent prototyping and learning about JavaFX's API and creating the UI and visualizer for the application. Currently we have the visualizer created, pause and resume functions, the main scene UI, volume bar, and music time bar.
 
-First, here are some of the things we learned & prototyped before starting the main project.
+First, both of us worked on prototyping and learning about JavaFX before working on the main project. Then we moved to create changes and begin merging what we prototyped into one package. Some of our largest concerns was making sure the project's files were set up well if someone else were to look at our work which is why we did lots of prototypes before finally creating the repository.
+
+Here is some of the information we gained from prototyping first.
 
 1. JavaFX .fxml files work 1-1 (.fxml - java controller), and will load/instantiate when called upon.
 2. JavaFX MediaPlayer has an observer pattern for active/current media data that is being played. This means that if there's no sound there will be no information being feed to the listener.
@@ -27,6 +29,8 @@ Because we have continued to prototype we had to make some changes to the design
 Because each of the pages have a separate controller, but all need to use the same MediaPlayer, we created a singleton class that will hold our MediaPlayer. It will hold one instance and each controller can get the media when the page loads.
 
 This allows us to **not** store all of the actions of a scene into **one** controller. Instead we have multiple controllers and can change each module if we like. Because of this design, it should allow us to load different types of visualizer's to have different types of displays if we want.
+
+In addition we ran into the issue that the current graph.fxml file isn't good coding practice and we are in need to change how the file's structured. Instead we need the graphController to generate a UI for the graph and hold onto a reference to each bar of the graph. This is so that the graphController can manipulate the bars to show the audio spectrum's visuals. We think the best way right now is to create a strategy pattern and have that strategy have different types of UI generation. This way we can easily change or add to the method's behavior.  
 
 #### Patterns
 
