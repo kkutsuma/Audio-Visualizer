@@ -12,7 +12,7 @@ _Created for CU Boulder CSCI 4448 SU21 Final Project_
 
 This past sprint has been spent prototyping and learning about JavaFX's API and creating the UI and visualizer for the application. Currently we have the visualizer created, pause and resume functions, the main scene UI, volume bar, and music time bar.
 
-First, both of us worked on prototyping and learning about JavaFX before working on the main project. Then we moved to create changes and begin merging what we prototyped into one package. Some of our largest concerns was making sure the project's files were set up well if someone else were to look at our work which is why we did lots of prototypes before finally creating the repository.
+First, both of us worked on prototyping and learning about JavaFX before working on the main project. Then we moved to create changes and begin merging what we prototyped into one package. Since most of the code was already available from us prototyping Keith worked on putting the code for this repository together. In addition Keith already had the UML from project 5 so he handled that as well. Some of our largest concerns was making sure the project's files were set up well if someone else were to look at our work which is why we did lots of prototypes before finally creating the repository.
 
 Here is some of the information we gained from prototyping first.
 
@@ -43,16 +43,16 @@ In addition we ran into the issue that the current graph.fxml file isn't good co
 
 ### Next Sprint
 
-Next spring we need to finish up the program. Currently this includes creating the file system, file system scene, adding/removing songs, and changing songs. We also have one change that we want to make to the previous work. This is adding a strategy pattern to the visualizer. Specifically the shapes of the UI so that we can change how many shapes, the shapes color, and the shape type if we want to.
+Next spring we need to finish up the program. Currently this includes creating the file system, file system scene, adding/removing songs, and changing songs. We also have one change that we want to make to the previous work. This is adding a strategy pattern to the visualizer. Specifically the shapes of the UI so that we can change how many shapes, the shapes color, and the shape type if we want to. We are projecting that the File Management will the most difficult part of this sprint. But because we have mostly medium's, *(look below)* we plan to have this functionality completed by 7/21
 
 *Next Sprint Checklist*
 
-* Create File System UI
-* Create Controllers for .fxml files
-* Add file management class
-  * May require creating a song class to hold song information
-* Add change song functionality
-* Add ability to change visualizer settings
+* [M] Create File System UI
+* [M] Create Controllers for .fxml files
+* [L] Add file management class
+  * [S] May require creating a song class to hold song information
+* [M] Add change song functionality
+* [S] Add ability to change visualizer settings
 
 ### Class Diagram
 
