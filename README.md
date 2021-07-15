@@ -52,6 +52,10 @@ Next spring we need to finish up the program. Currently this includes creating t
 * Add change song functionality
 * Add ability to change visualizer settings
 
+### Class Diagram
+
+[Current Class UML](https://github.com/kkutsuma/CSCI4448_Lab6/blob/README_Images/ClassDiagram.jpg)
+
 ### Project Set Up
 
 To work on this project we are using JavaFX 16. You can find the latest JavaFX download [here](https://gluonhq.com/products/javafx/). To set up JavaFX you can find instructions [here](https://openjfx.io/openjfx-docs/).
