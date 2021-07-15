@@ -56,7 +56,7 @@ Next spring we need to finish up the program. Currently this includes creating t
 
 ### Class Diagram
 
-[Current Class UML](https://github.com/kkutsuma/CSCI4448_Lab6/blob/README_Images/ClassDiagram.jpg)
+![Current Class UML](https://github.com/kkutsuma/CSCI4448_Lab6/blob/README_Images/ClassDiagram.jpg)
 
 ### Project Set Up
 
