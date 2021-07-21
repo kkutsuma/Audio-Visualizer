@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.media.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MainProgram.MyMediaPlayer">
+   <children>
+      <MenuBar>
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+              <MenuItem mnemonicParsing="false" onAction="#handleOpen" text="Open" />
+            </items>
+          </Menu>
+          <Menu fx:id="visualizersMenu" mnemonicParsing="false" text="Scenes" />
+            <Menu fx:id="bandsMenu" mnemonicParsing="false" text="Bands" />
+        </menus>
+      </MenuBar>
+      <AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="800.0" styleClass="mainFxmlClass">
+         <children>
+            <Button layoutX="25.0" layoutY="58.0" mnemonicParsing="false" onAction="#handlePlay" text="Play" />
+            <Button layoutX="78.0" layoutY="58.0" mnemonicParsing="false" onAction="#handlePause" text="Pause" />
+            <Button layoutX="142.0" layoutY="58.0" mnemonicParsing="false" onAction="#handleStop" text="Stop" />
+            <AnchorPane fx:id="vizPane" layoutX="236.0" layoutY="106.0" prefHeight="397.0" prefWidth="550.0" />
+            <Text fx:id="errorText" fill="RED" layoutX="25.0" layoutY="592.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+            <MediaView fx:id="mediaView" fitHeight="200.0" fitWidth="200.0" layoutX="25.0" layoutY="203.0" />
+            <Text fx:id="filePathText" layoutX="25.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+            <Text fx:id="visualizerNameText" layoutX="450.0" layoutY="569.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font></Text>
+            <Label layoutX="31.0" layoutY="161.0" text="Bands:" />
+            <Text fx:id="bandsText" layoutX="86.0" layoutY="174.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+            <Slider fx:id="timeSlider" layoutX="266.0" layoutY="63.0" onMousePressed="#handleSliderMousePressed" onMouseReleased="#handleSliderMouseReleased" prefHeight="16.0" prefWidth="476.0" />
+         </children>
+      </AnchorPane>
+   </children>
+</VBox>
