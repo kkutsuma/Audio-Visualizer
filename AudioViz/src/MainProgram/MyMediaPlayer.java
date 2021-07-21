@@ -1,9 +1,17 @@
 package MainProgram;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
+
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -62,10 +70,27 @@ public class MyMediaPlayer implements Initializable {
     
     private ArrayList<SceneController> scenes;
     private SceneController currentScene;
-    private final Integer[] bandsList = {1, 2, 4, 8, 16, 20, 40, 60, 100, 120, 140};
+    private final Integer[] bandsList = {1, 2, 4, 8, 16, 20, 40, 60, 100, 128, 256};
+
+    private List<String[]> Songs;
+    private int currentSong;
+    private int songCount;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        // Create List of All Songs
+        // https://mkyong.com/java/how-to-read-and-parse-csv-file-in-java/
+        try {
+            String dir = System.getProperty("user.dir");
+            Songs = Files.lines(Paths.get(dir+"/src/MainProgram/Data/songs.csv"))
+                    .map(line -> line.split(","))
+                    .collect(Collectors.toList());
+            currentSong = 0;
+            songCount = Songs.size()-1;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         bandsText.setText(Integer.toString(numBands));
         
         scenes = new ArrayList<>();
@@ -90,6 +115,7 @@ public class MyMediaPlayer implements Initializable {
             });
             bandsMenu.getItems().add(menuItem);
         }
+        openMedia(new File(Songs.get(0)[0]));
     }
     
     private void selectScene(ActionEvent event) {
@@ -148,6 +174,7 @@ public class MyMediaPlayer implements Initializable {
             filePathText.setText(file.getPath());
         } catch (Exception ex) {
             errorText.setText(ex.toString());
+            System.out.println(ex);
         }
     }
     // set timeSlider value
@@ -159,9 +186,15 @@ public class MyMediaPlayer implements Initializable {
     }
     
     private void handleEndOfMedia() {
+        if(currentSong == songCount) {
+            currentSong = 0;
+        } else {
+            currentSong = currentSong + 1;
+        }
         mediaPlayer.stop();
         mediaPlayer.seek(Duration.ZERO);
         timeSlider.setValue(0);
+        openMedia(new File(Songs.get(currentSong)[0]));
     }
     
     private void handleUpdate(double timestamp, double duration, float[] magnitudes, float[] phases) {
@@ -172,14 +205,37 @@ public class MyMediaPlayer implements Initializable {
         
        currentScene.update(timestamp, duration, magnitudes, phases);
     }
-    
+
+    // https://stackoverflow.com/questions/1625234/how-to-append-text-to-an-existing-file-in-java
     @FXML
     private void handleOpen(Event event) {
-        Stage primaryStage = (Stage)vizPane.getScene().getWindow();
-        FileChooser fileChooser = new FileChooser();
-        File file = fileChooser.showOpenDialog(primaryStage);
-        if (file != null) {
-            openMedia(file);
+        String dir = System.getProperty("user.dir");
+        File newSong = FileManager.display();
+        boolean exists = false;
+
+        if(newSong != null) {
+            System.out.println(newSong);
+            for(String[] song : Songs) {
+                if(song[0].equals(newSong.toString())) {
+                    exists = true;
+                    break;
+                }
+            }
+            if(!exists) {
+                try {
+                    // Write to file
+                    FileWriter myWriter = new FileWriter(dir+"/src/MainProgram/Data/songs.csv", true);
+                    myWriter.write("\n" + newSong.toString());
+                    myWriter.close();
+                    // Update current song list
+                    Songs.add(newSong.toString().split(","));
+                    songCount = songCount + 1;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                System.out.println("Song already exists!");
+            }
         }
     }
     
@@ -217,8 +273,8 @@ public class MyMediaPlayer implements Initializable {
     private void handleSliderMouseReleased(Event event) {
         if (mediaPlayer != null) {
             mediaPlayer.seek(new Duration(timeSlider.getValue()));
-            
-            currentScene.start(numBands, vizPane);
+            //currentScene.end();
+            //currentScene.start(numBands, vizPane);
             mediaPlayer.play();
         }  
     }

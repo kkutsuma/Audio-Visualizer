@@ -39,7 +39,7 @@ public class Scene2Controller implements SceneController{
         
         height = vizPane.getHeight();
         width = vizPane.getWidth();
-        System.out.print(height);
+        // System.out.print(height);
         bandWidth = width / numBands;
         bandHeight = height * bandHeightPercentage;
         halfBandHeight = bandHeight / 2;
