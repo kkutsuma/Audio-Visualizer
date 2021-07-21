@@ -32,7 +32,7 @@ public class Scene2Controller implements SceneController{
 
     @Override
     public void start(Integer numBands, AnchorPane vizPane) {
-        end();
+        this.end();
         
         this.numBands = numBands;
         this.vizPane = vizPane;
@@ -47,8 +47,8 @@ public class Scene2Controller implements SceneController{
         
         for (int i = 0; i < numBands; i++) {
             Rectangle rectangle = new Rectangle();
-            rectangle.setX(bandWidth / 2 + bandWidth * i);
-            rectangle.setY(height / 2);
+            rectangle.setX(bandWidth * i);
+            rectangle.setY(height/ 3);
             rectangle.setWidth(bandWidth);
             rectangle.setHeight(minWidth);
             rectangle.setFill(Color.hsb(startHue, 1.0, 1.0, 1.0));
@@ -64,9 +64,8 @@ public class Scene2Controller implements SceneController{
             for (Rectangle rectangle : rectangles) {
                 vizPane.getChildren().remove(rectangle);
             }
-           rectangles = null;
-       }
-        
+            rectangles = null;
+        }
     }
 
     @Override
@@ -84,7 +83,7 @@ public class Scene2Controller implements SceneController{
         Integer num = min(rectangles.length, magnitudes.length);
         
         for (int i = 0; i < num; i++) {
-            System.out.println(magnitudes[i]);
+            // System.out.println(magnitudes[i]);
             
             rectangles[i].setScaleY(2);
             rectangles[i].setHeight(((60.0 + magnitudes[i])/60.0) * halfBandHeight + minWidth);

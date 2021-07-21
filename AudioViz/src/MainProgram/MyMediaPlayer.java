@@ -16,6 +16,7 @@ import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Slider;
@@ -44,11 +45,11 @@ public class MyMediaPlayer implements Initializable {
     @FXML
     private Text filePathText;
     
-    @FXML
-    private Text bandsText;
+    //@FXML
+    //private Text bandsText;
     
-    @FXML
-    private Text visualizerNameText;
+    //@FXML
+    //private Text visualizerNameText;
     
     @FXML
     private Text errorText;
@@ -61,20 +62,25 @@ public class MyMediaPlayer implements Initializable {
     
     @FXML
     private Slider timeSlider;
+
+    @FXML
+    private Button pauseResumeButton;
     
     private Media media;
     private MediaPlayer mediaPlayer;
     
-    private Integer numBands = 4;//40
+    private Integer numBands = 128; //2^(8-1)
     private final Double updateInterval = 0.05;
     
     private ArrayList<SceneController> scenes;
     private SceneController currentScene;
-    private final Integer[] bandsList = {1, 2, 4, 8, 16, 20, 40, 60, 100, 128, 256};
+    private final Integer[] bandsList = {1, 2, 4, 8, 16, 32, 64, 128, 256, 384, 512};
 
     private List<String[]> Songs;
     private int currentSong;
     private int songCount;
+
+    private double vizPaneWidth;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -91,8 +97,7 @@ public class MyMediaPlayer implements Initializable {
             e.printStackTrace();
         }
 
-        bandsText.setText(Integer.toString(numBands));
-        
+        // Create List of the different Scenes & set current scene
         scenes = new ArrayList<>();
         scenes.add(new Scene1Controller());
         scenes.add(new Scene2Controller());
@@ -105,8 +110,8 @@ public class MyMediaPlayer implements Initializable {
             visualizersMenu.getItems().add(menuItem);
         }
         currentScene = scenes.get(0);
-        visualizerNameText.setText(currentScene.getName());
-        
+
+        // Set Number of Bands to vizualize
         for (Integer bands : bandsList) {
             MenuItem menuItem = new MenuItem(Integer.toString(bands));
             menuItem.setUserData(bands);
@@ -115,7 +120,18 @@ public class MyMediaPlayer implements Initializable {
             });
             bandsMenu.getItems().add(menuItem);
         }
+
+        // Start the first song
         openMedia(new File(Songs.get(0)[0]));
+
+        // Set up vizualization resizing
+        vizPaneWidth = vizPane.getWidth();
+        vizPane.widthProperty().addListener((obs, oldVal, newVal) -> {
+            if(Math.abs(newVal.intValue() -  vizPaneWidth) > 10) {
+                handleWidthChange();
+                vizPaneWidth = vizPane.getWidth();
+            }
+        });
     }
     
     private void selectScene(ActionEvent event) {
@@ -133,7 +149,7 @@ public class MyMediaPlayer implements Initializable {
         if (mediaPlayer != null) {
             mediaPlayer.setAudioSpectrumNumBands(numBands);
         }
-        bandsText.setText(Integer.toString(numBands));
+        // bandsText.setText(Integer.toString(numBands));
     }
     
     private void changeScene(SceneController scene) {
@@ -142,7 +158,7 @@ public class MyMediaPlayer implements Initializable {
         }
         currentScene = scene;
         currentScene.start(numBands, vizPane);
-        visualizerNameText.setText(currentScene.getName());
+        //visualizerNameText.setText(currentScene.getName());
     }
     
     private void openMedia(File file) {
@@ -166,7 +182,6 @@ public class MyMediaPlayer implements Initializable {
             mediaPlayer.setAudioSpectrumInterval(updateInterval);
             
             mediaPlayer.setAudioSpectrumListener((double timestamp, double duration, float[] magnitudes, float[] phases) -> {
-                
                 handleUpdate(timestamp, duration, magnitudes, phases);
             });
            
@@ -177,6 +192,7 @@ public class MyMediaPlayer implements Initializable {
             System.out.println(ex);
         }
     }
+
     // set timeSlider value
     private void handleReady() {
         Duration duration = mediaPlayer.getTotalDuration();
@@ -204,6 +220,12 @@ public class MyMediaPlayer implements Initializable {
         timeSlider.setValue(ms);
         
        currentScene.update(timestamp, duration, magnitudes, phases);
+    }
+
+    private void handleWidthChange() {
+        if(mediaPlayer.getStatus().equals(MediaPlayer.Status.PLAYING)) {
+            currentScene.start(numBands, vizPane);
+        }
     }
 
     // https://stackoverflow.com/questions/1625234/how-to-append-text-to-an-existing-file-in-java
@@ -250,7 +272,15 @@ public class MyMediaPlayer implements Initializable {
     @FXML
     private void handlePause(ActionEvent event) {
         if (mediaPlayer != null) {
-           mediaPlayer.pause(); 
+            MediaPlayer.Status currentStatus = mediaPlayer.getStatus();
+            if(currentStatus.equals(MediaPlayer.Status.PLAYING)) {
+                mediaPlayer.pause();
+                pauseResumeButton.setText("Play");
+            } else if (currentStatus.equals(MediaPlayer.Status.PAUSED) || currentStatus.equals(MediaPlayer.Status.STOPPED)) {
+                mediaPlayer.play();
+                pauseResumeButton.setText("Pause");
+            }
+            pauseResumeButton.setStyle("-fx-background-color: #626868");
         }
     }
     
@@ -265,7 +295,7 @@ public class MyMediaPlayer implements Initializable {
     @FXML
     private void handleSliderMousePressed(Event event) {
         if (mediaPlayer != null) {
-           mediaPlayer.pause(); 
+           mediaPlayer.pause();
         }  
     }
     
@@ -276,6 +306,7 @@ public class MyMediaPlayer implements Initializable {
             //currentScene.end();
             //currentScene.start(numBands, vizPane);
             mediaPlayer.play();
+            pauseResumeButton.setText("Pause");
         }  
     }
 }

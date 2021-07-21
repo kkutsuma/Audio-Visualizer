@@ -45,23 +45,23 @@ public class Scene1Controller implements SceneController {
 
         height = vizPane.getHeight();
         width = vizPane.getWidth();
-        System.out.print(height);
-        bandWidth = width / numBands;
+        bandWidth = width / (numBands);
         bandHeight = height * bandHeightPercentage;
         halfBandHeight = bandHeight / 2;
         graphBars = new Rectangle[numBands];
 
         for(int i = 0; i < numBands; ++i){
             Rectangle bar = new Rectangle();
-            bar.setX(bandWidth / 2 + bandWidth * i);
-            bar.setY(height / 2);
+            bar.setY(height / 3);
             bar.setWidth(bandWidth);
             bar.setHeight(minWidth);
+            bar.setX(bandWidth * i);
+            bar.setX( bandWidth * i);
             bar.setFill(Color.DODGERBLUE);
             vizPane.getChildren().add(bar);
             graphBars[i] = bar;
         }
-        
+
     }
 
     @Override
@@ -89,7 +89,7 @@ public class Scene1Controller implements SceneController {
         Integer num = min(graphBars.length, magnitudes.length);
         
         for (int i = 0; i < num; i++) {
-            System.out.println(magnitudes[i]);
+            // System.out.println(magnitudes[i]);
             
             graphBars[i].setScaleY(2);
             graphBars[i].setHeight(((60.0 + magnitudes[i])/60) * halfBandHeight + minWidth);
