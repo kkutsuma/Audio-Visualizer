@@ -8,7 +8,7 @@ import javafx.scene.shape.Rectangle;
 import static java.lang.Integer.min;
 
 public class Scene2Controller implements SceneController{
-    private final String name = "Scene 2";
+    private final String name = "Rainbow";
     
     private Integer numBands;
     private AnchorPane vizPane;

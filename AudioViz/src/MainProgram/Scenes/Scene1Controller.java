@@ -13,7 +13,7 @@ import static java.lang.Integer.min;
  * Linear Gradient: https://www.javatpoint.com/javafx-gradient-color
  */
 public class Scene1Controller implements SceneController {
-    private final String name = "Scene 1";
+    private final String name = "Azure Dragon";
 
     private Integer numBands;
     private AnchorPane vizPane;

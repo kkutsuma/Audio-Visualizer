@@ -12,14 +12,13 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.Slider;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -43,7 +42,10 @@ public class MyMediaPlayer implements Initializable {
     private MediaView mediaView;
     
     @FXML
-    private Text filePathText;
+    private Label songTitle;
+
+    @FXML
+    private Label songArtist;
     
     //@FXML
     //private Text bandsText;
@@ -64,6 +66,9 @@ public class MyMediaPlayer implements Initializable {
     private Slider timeSlider;
 
     @FXML
+    private Slider volumeSlider;
+
+    @FXML
     private Button pauseResumeButton;
     
     private Media media;
@@ -76,7 +81,7 @@ public class MyMediaPlayer implements Initializable {
     private SceneController currentScene;
     private final Integer[] bandsList = {1, 2, 4, 8, 16, 32, 64, 128, 256, 384, 512};
 
-    private List<String[]> Songs;
+    private List<mySong> Songs;
     private int currentSong;
     private int songCount;
 
@@ -90,9 +95,13 @@ public class MyMediaPlayer implements Initializable {
             String dir = System.getProperty("user.dir");
             Songs = Files.lines(Paths.get(dir+"/src/MainProgram/Data/songs.csv"))
                     .map(line -> line.split(","))
+                    .map(mySong::new)
                     .collect(Collectors.toList());
             currentSong = 0;
             songCount = Songs.size()-1;
+            if(songCount <= 0) {
+                songCount = 0;
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -111,6 +120,14 @@ public class MyMediaPlayer implements Initializable {
         }
         currentScene = scenes.get(0);
 
+        volumeSlider.valueProperty().addListener(new InvalidationListener() {
+            public void invalidated(Observable ov) {
+                if (volumeSlider.isValueChanging()) {
+                    mediaPlayer.setVolume(volumeSlider.getValue() / 100.0);
+                }
+            }
+        });
+
         // Set Number of Bands to vizualize
         for (Integer bands : bandsList) {
             MenuItem menuItem = new MenuItem(Integer.toString(bands));
@@ -122,16 +139,9 @@ public class MyMediaPlayer implements Initializable {
         }
 
         // Start the first song
-        openMedia(new File(Songs.get(0)[0]));
-
-        // Set up vizualization resizing
-        vizPaneWidth = vizPane.getWidth();
-        vizPane.widthProperty().addListener((obs, oldVal, newVal) -> {
-            if(Math.abs(newVal.intValue() -  vizPaneWidth) > 10) {
-                handleWidthChange();
-                vizPaneWidth = vizPane.getWidth();
-            }
-        });
+        if(!Songs.isEmpty()) {
+            openMedia(Songs.get(0));
+        }
     }
     
     private void selectScene(ActionEvent event) {
@@ -160,11 +170,20 @@ public class MyMediaPlayer implements Initializable {
         currentScene.start(numBands, vizPane);
         //visualizerNameText.setText(currentScene.getName());
     }
-    
-    private void openMedia(File file) {
-        filePathText.setText("");
+
+    /**
+     * openMedia will set the song title, artist, and set the new song to be played
+     *
+     * @param song new Song to be played
+     *
+     */
+    private void openMedia(mySong song) {
+        double prevVolume = 1.0;
+        File file = new File(song.getURL());
+        songTitle.setText("");
         errorText.setText("");
         if (mediaPlayer != null) {
+            prevVolume = mediaPlayer.getVolume();
             mediaPlayer.dispose();
         }
         
@@ -184,23 +203,39 @@ public class MyMediaPlayer implements Initializable {
             mediaPlayer.setAudioSpectrumListener((double timestamp, double duration, float[] magnitudes, float[] phases) -> {
                 handleUpdate(timestamp, duration, magnitudes, phases);
             });
-           
+            // Set up vizualization resizing
+            vizPaneWidth = vizPane.getWidth();
+            vizPane.widthProperty().addListener((obs, oldVal, newVal) -> {
+                if(Math.abs(newVal.intValue() -  vizPaneWidth) > 10) {
+                    handleWidthChange();
+                    vizPaneWidth = vizPane.getWidth();
+                }
+            });
+            mediaPlayer.setVolume(prevVolume);
+
+            songTitle.setText(song.getTitle());
+            songArtist.setText(song.getArtist());
             mediaPlayer.setAutoPlay(true);
-            filePathText.setText(file.getPath());
+
         } catch (Exception ex) {
             errorText.setText(ex.toString());
             System.out.println(ex);
         }
     }
 
-    // set timeSlider value
+    /**
+     * set duration and  timeSlider values
+     */
     private void handleReady() {
         Duration duration = mediaPlayer.getTotalDuration();
         currentScene.start(numBands, vizPane);
         timeSlider.setMin(0);
         timeSlider.setMax(duration.toMillis());
     }
-    
+
+    /**
+     * Sets action when for when the song ends
+     */
     private void handleEndOfMedia() {
         if(currentSong == songCount) {
             currentSong = 0;
@@ -210,7 +245,7 @@ public class MyMediaPlayer implements Initializable {
         mediaPlayer.stop();
         mediaPlayer.seek(Duration.ZERO);
         timeSlider.setValue(0);
-        openMedia(new File(Songs.get(currentSong)[0]));
+        openMedia(Songs.get(currentSong));
     }
     
     private void handleUpdate(double timestamp, double duration, float[] magnitudes, float[] phases) {
@@ -218,27 +253,41 @@ public class MyMediaPlayer implements Initializable {
         double ms = ct.toMillis();
  
         timeSlider.setValue(ms);
+
+        if(!volumeSlider.isValueChanging()) {
+            volumeSlider.setValue((int) Math.round(mediaPlayer.getVolume() * 100));
+        }
         
        currentScene.update(timestamp, duration, magnitudes, phases);
     }
 
+    /**
+     * Updates visualizer bars when width changes
+     */
     private void handleWidthChange() {
-        if(mediaPlayer.getStatus().equals(MediaPlayer.Status.PLAYING)) {
-            currentScene.start(numBands, vizPane);
+        if(mediaPlayer != null) {
+            if(mediaPlayer.getStatus().equals(MediaPlayer.Status.PLAYING)) {
+                currentScene.start(numBands, vizPane);
+            }
         }
     }
 
-    // https://stackoverflow.com/questions/1625234/how-to-append-text-to-an-existing-file-in-java
+    /**
+     * Opens new window for the user to add a new song
+     * // https://stackoverflow.com/questions/1625234/how-to-append-text-to-an-existing-file-in-java
+     *
+     * @param event JavaFX event of clicking the menu button
+     */
     @FXML
     private void handleOpen(Event event) {
         String dir = System.getProperty("user.dir");
-        File newSong = FileManager.display();
+        mySong newSong = FileManager.display();
         boolean exists = false;
 
+        // Ensures only new songs are added by URL
         if(newSong != null) {
-            System.out.println(newSong);
-            for(String[] song : Songs) {
-                if(song[0].equals(newSong.toString())) {
+            for(mySong song : Songs) {
+                if(song.getURL().equals(newSong.getURL())) {
                     exists = true;
                     break;
                 }
@@ -247,10 +296,10 @@ public class MyMediaPlayer implements Initializable {
                 try {
                     // Write to file
                     FileWriter myWriter = new FileWriter(dir+"/src/MainProgram/Data/songs.csv", true);
-                    myWriter.write("\n" + newSong.toString());
+                    myWriter.write("\n" + newSong.getTitle() + "," + newSong.getArtist() + "," + newSong.getURL());
                     myWriter.close();
                     // Update current song list
-                    Songs.add(newSong.toString().split(","));
+                    Songs.add(newSong);
                     songCount = songCount + 1;
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -260,15 +309,24 @@ public class MyMediaPlayer implements Initializable {
             }
         }
     }
-    
+
     @FXML
-    private void handlePlay(ActionEvent event) {
+    private void handlePrev(ActionEvent event) {
         if (mediaPlayer != null) {
-            mediaPlayer.play();
+            if(currentSong == 0) {
+                currentSong = songCount;
+            } else {
+                currentSong = currentSong - 1;
+            }
+            mediaPlayer.stop();
+            mediaPlayer.seek(Duration.ZERO);
+            timeSlider.setValue(0);
+            openMedia(Songs.get(currentSong));
+            pauseResumeButton.setText("Pause");
         }
-        
+
     }
-    
+
     @FXML
     private void handlePause(ActionEvent event) {
         if (mediaPlayer != null) {
@@ -285,11 +343,17 @@ public class MyMediaPlayer implements Initializable {
     }
     
     @FXML
-    private void handleStop(ActionEvent event) {
-        if (mediaPlayer != null) {
-           mediaPlayer.stop(); 
+    private void handleNext(ActionEvent event) {
+        if(currentSong == songCount) {
+            currentSong = 0;
+        } else {
+            currentSong = currentSong + 1;
         }
-        
+        mediaPlayer.stop();
+        mediaPlayer.seek(Duration.ZERO);
+        timeSlider.setValue(0);
+        openMedia(Songs.get(currentSong));
+        pauseResumeButton.setText("Pause");
     }
     
     @FXML
