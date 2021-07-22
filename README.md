@@ -57,7 +57,19 @@ __ADD ABOUT HOW THE CODE YOU USED FOR THE VISUALIZER__
 
 1. Keith found it difficult during the designing phase especially around JavaFX since we didn't know much about it. It was difficult to determine how the code needed to be handled and what was best practice. Since working with more packages/libraries, they can be designed in a way that isn't Object Oriented Friendly. Or they have an aspects that have difficult give or takes. In our case learning how to deal with .fxml files was difficult and took many prototypes until a decent design was even made.
 
-2. Another point Keith saw was that our group worked in more of a scrum style. In the end when we started to understand more about JavaFX and working together our results were quicker and seemed to work better. Given more scrums the project was on track to have some impresive results. The issue being that we don't have continuous amounts of time to work and should have treated it more like a waterfall style since we have a hard deadline for the class. 
+2. Another point Keith saw was that our group worked in more of a scrum style. In the end when we started to understand more about JavaFX and working together our results were quicker and seemed to work better. Given more scrums the project was on track to have some impresive results. The issue being that we don't have continuous amounts of time to work and should have treated it more like a waterfall style since we have a hard deadline for the class.
+
+### Project Set Up
+
+To work on this project we are using JavaFX 16 & Java 16. You can find the latest JavaFX download [here](https://gluonhq.com/products/javafx/). To set up JavaFX you can find instructions [here](https://openjfx.io/openjfx-docs/). You can then run the main function if you want to run the program there.
+
+There is also a built .jar file **AudioViz.jar** which can be executed with the vm options
+
+```
+--module-path ${PATH_TO_FX} --add-modules javafx.controls,javafx.fxml,javafx.media
+```
+
+Where the ${PATH_TO_FX} is your own path to the JavaFX lib folder.
 
 ## MIDPOINT UPDATE [DEPRECATED]
 
@@ -115,7 +127,3 @@ Next spring we need to finish up the program. Currently this includes creating t
 ### Class Diagram
 
 ![Current Class UML](https://github.com/kkutsuma/CSCI4448_Lab6/blob/README_Images/ClassDiagram.jpg)
-
-### Project Set Up
-
-To work on this project we are using JavaFX 16. You can find the latest JavaFX download [here](https://gluonhq.com/products/javafx/). To set up JavaFX you can find instructions [here](https://openjfx.io/openjfx-docs/).
