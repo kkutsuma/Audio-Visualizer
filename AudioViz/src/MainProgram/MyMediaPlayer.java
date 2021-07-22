@@ -47,12 +47,6 @@ public class MyMediaPlayer implements Initializable {
     @FXML
     private Label songArtist;
     
-    //@FXML
-    //private Text bandsText;
-    
-    //@FXML
-    //private Text visualizerNameText;
-    
     @FXML
     private Text errorText;
     
@@ -86,7 +80,7 @@ public class MyMediaPlayer implements Initializable {
     private int songCount;
 
     private double vizPaneWidth;
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // Create List of All Songs
@@ -120,6 +114,7 @@ public class MyMediaPlayer implements Initializable {
         }
         currentScene = scenes.get(0);
 
+        // Sets volume bar to change volume when bar value is changed
         volumeSlider.valueProperty().addListener(new InvalidationListener() {
             public void invalidated(Observable ov) {
                 if (volumeSlider.isValueChanging()) {
@@ -143,13 +138,21 @@ public class MyMediaPlayer implements Initializable {
             openMedia(Songs.get(0));
         }
     }
-    
+
+    /**
+     * Changes the visualizer when option is changed in the menu
+     * @param event Takes user input of a menu scene option
+     */
     private void selectScene(ActionEvent event) {
         MenuItem menuItem = (MenuItem)event.getSource();
         SceneController scene = (SceneController)menuItem.getUserData();
         changeScene(scene);
     }
-    
+
+    /**
+     * Changes the amount of bars the visualizer has when option is changed in the menu
+     * @param event Takes user input of a menu band option
+     */
     private void selectBands(ActionEvent event) {
         MenuItem menuItem = (MenuItem)event.getSource();
         numBands = (Integer)menuItem.getUserData();
@@ -161,14 +164,18 @@ public class MyMediaPlayer implements Initializable {
         }
         // bandsText.setText(Integer.toString(numBands));
     }
-    
+
+    /**
+     * Takes a SceneController and sets the current visualizer type to it
+     *
+     * @param scene a SceneController that the visualizer will  change to
+     */
     private void changeScene(SceneController scene) {
         if (currentScene != null) {
             currentScene.end();
         }
         currentScene = scene;
         currentScene.start(numBands, vizPane);
-        //visualizerNameText.setText(currentScene.getName());
     }
 
     /**
@@ -211,6 +218,8 @@ public class MyMediaPlayer implements Initializable {
                     vizPaneWidth = vizPane.getWidth();
                 }
             });
+
+            // Set Values for UI (volume, song title/artist)
             mediaPlayer.setVolume(prevVolume);
 
             songTitle.setText(song.getTitle());
@@ -247,7 +256,14 @@ public class MyMediaPlayer implements Initializable {
         timeSlider.setValue(0);
         openMedia(Songs.get(currentSong));
     }
-    
+
+    /**
+     * Handles all values that need to be changed when a new sound is played
+     * @param timestamp     current time of song
+     * @param duration      durration of song
+     * @param magnitudes    array of magnitudes of each band (band amt. is variable)
+     * @param phases        array of phases of each band (band amt. is variable)
+     */
     private void handleUpdate(double timestamp, double duration, float[] magnitudes, float[] phases) {
         Duration ct = mediaPlayer.getCurrentTime();
         double ms = ct.toMillis();
@@ -296,11 +312,22 @@ public class MyMediaPlayer implements Initializable {
                 try {
                     // Write to file
                     FileWriter myWriter = new FileWriter(dir+"/src/MainProgram/Data/songs.csv", true);
-                    myWriter.write("\n" + newSong.getTitle() + "," + newSong.getArtist() + "," + newSong.getURL());
-                    myWriter.close();
-                    // Update current song list
-                    Songs.add(newSong);
-                    songCount = songCount + 1;
+                    if(songCount > 1) {
+                        myWriter.write("\n" + newSong.getTitle() + "," + newSong.getArtist() + "," + newSong.getURL());
+                        myWriter.close();
+                        // Update current song list
+                        Songs.add(newSong);
+                        songCount = songCount + 1;
+                    } else {
+                        myWriter.write(newSong.getTitle() + "," + newSong.getArtist() + "," + newSong.getURL());
+                        myWriter.close();
+                        // Update current song list
+                        Songs.add(newSong);
+                        songCount = 0;
+                        currentSong = 0;
+                        openMedia(Songs.get(0));
+                    }
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -310,10 +337,14 @@ public class MyMediaPlayer implements Initializable {
         }
     }
 
+    /**
+     * If there is a song, sets the next song to be the previous song in the queue
+     * @param event When user clicks the prev button
+     */
     @FXML
     private void handlePrev(ActionEvent event) {
         if (mediaPlayer != null) {
-            if(currentSong == 0) {
+            if(currentSong <= 1) {
                 currentSong = songCount;
             } else {
                 currentSong = currentSong - 1;
@@ -327,6 +358,10 @@ public class MyMediaPlayer implements Initializable {
 
     }
 
+    /**
+     * Pauses or Resumes music depending on if music is playing or paused.
+     * @param event When user clicks the pause button
+     */
     @FXML
     private void handlePause(ActionEvent event) {
         if (mediaPlayer != null) {
@@ -341,7 +376,11 @@ public class MyMediaPlayer implements Initializable {
             pauseResumeButton.setStyle("-fx-background-color: #626868");
         }
     }
-    
+
+    /**
+     * If there is a song, sets the next song to be the next song in the queue
+     * @param event When user clicks the next button
+     */
     @FXML
     private void handleNext(ActionEvent event) {
         if(currentSong == songCount) {
@@ -355,20 +394,26 @@ public class MyMediaPlayer implements Initializable {
         openMedia(Songs.get(currentSong));
         pauseResumeButton.setText("Pause");
     }
-    
+
+    /**
+     * Pause song when user holds click on timer bar
+     * @param event User click and holding on timer bar.
+     */
     @FXML
     private void handleSliderMousePressed(Event event) {
         if (mediaPlayer != null) {
            mediaPlayer.pause();
         }  
     }
-    
+
+    /**
+     * Moves the songs to the point where the user changed it in the timer bar
+     * @param event User changes value of timer bar
+     */
     @FXML
     private void handleSliderMouseReleased(Event event) {
         if (mediaPlayer != null) {
             mediaPlayer.seek(new Duration(timeSlider.getValue()));
-            //currentScene.end();
-            //currentScene.start(numBands, vizPane);
             mediaPlayer.play();
             pauseResumeButton.setText("Pause");
         }  

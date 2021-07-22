@@ -27,9 +27,7 @@ public class Scene1Controller implements SceneController {
     private Double bandWidth = 0.0;
     private Double bandHeight = 0.0;
     private Double halfBandHeight = 0.0;
-    
-    //private final Double startHue = 260.0;
-    
+
     public Rectangle[] graphBars;
 
     public Scene1Controller(){
@@ -89,8 +87,6 @@ public class Scene1Controller implements SceneController {
         Integer num = min(graphBars.length, magnitudes.length);
         
         for (int i = 0; i < num; i++) {
-            // System.out.println(magnitudes[i]);
-            
             graphBars[i].setScaleY(2);
             graphBars[i].setHeight(((60.0 + magnitudes[i])/60) * halfBandHeight + minWidth);
             Stop[] stops = new Stop[] { new Stop(0, Color.LIGHTBLUE), new Stop(1, Color.BLUE)};  

@@ -21,12 +21,12 @@ import java.io.File;
  * https://www.youtube.com/watch?v=SpL3EToqaXA&ab_channel=thenewboston
  */
 public class FileManager {
-    static File newSongFile;
-    static mySong newSong;
+    private static File newSongFile;
+    private static mySong newSong;
 
-    static TextField songTitle;
-    static TextField songArtist;
-    static Label fileLocation;
+    private static TextField songTitle;
+    private static TextField songArtist;
+    private static Label fileLocation;
 
     public static mySong display() {
         Stage window = new Stage();
