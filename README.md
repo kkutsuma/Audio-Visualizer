@@ -61,13 +61,15 @@ The file system used Java's Read/Write libraries to read, write, and find the .c
 
 The controls of the project such as the volume slider, timer bar, and buttons use basic functions of the JavaFX API and we use multiple techniques. For both slider's we use different ways to control them because they each have slightly different needs. The volume bar used a way that [Oracle handled a slider](https://docs.oracle.com/javase/8/javafx/media-tutorial/playercontrol.htm), but didn't handle the timer bar how we wanted so Kelsey found another way to do that. Most of the standard practices can be found on [Oracle's website and this](https://docs.oracle.com/javase/8/javafx/get-started-tutorial/index.html) was a resource that helped.
 
-__ADD ABOUT HOW THE CODE YOU USED FOR THE VISUALIZER__
+For the visual graphic design portion of our project, https://docs.oracle.com/javase/8/javafx/api/javafx/scene/shape/Rectangle.html was a great resource used to help understand the properties and methods that make up the Rectangle shape Javafx class. Additionally, https://www.tutorialspoint.com/javafx/javafx_colors.htm was also a useful resource to look at when trying to implement different color patterns such as, the linear gradient pattern used in the scene, "Rainbow".
 
 ### Final Statements on OOAD
 
 1. Keith found it difficult during the designing phase especially around JavaFX since we didn't know much about it. It was difficult to determine how the code needed to be handled and what was best practice. Since working with more packages/libraries, they can be designed in a way that isn't Object Oriented Friendly. Or they have an aspects that have difficult give or takes. In our case learning how to deal with .fxml files was difficult and took many prototypes until a decent design was even made.
 
 2. Another point Keith saw was that our group worked in more of a scrum style. In the end when we started to understand more about JavaFX and working together our results were quicker and seemed to work better. Given more scrums the project was on track to have some impresive results. The issue being that we don't have continuous amounts of time to work and should have treated it more like a waterfall style since we have a hard deadline for the class.
+
+3. Kelsey encountered numerous problems when trying to implement the file chooser feature included in our final draft of our project. The main problem being the excess use of multiple .fxml files and loading all of them using the FXML loader in our previous draft of our project. Kelsey found a way to work around this issue by restructering the overall program layout and removing all extra .fxml files except for our main one.
 
 ### Project Set Up
 
