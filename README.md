@@ -23,6 +23,12 @@ From project 6 we made major changes. Starting with the file system we added the
 
 Here are the Project 5 and the Final Class Diagrams.
 
+![Final Class Diagram](https://github.com/kkutsuma/CSCI4448_Lab6/blob/README_Images/Final_Class_Diagram.png)
+**Final Class Diagram**
+
+![Previous Class UML](https://github.com/kkutsuma/CSCI4448_Lab6/blob/README_Images/Class_Diagram_Project5.jpg)
+**Project 5 Class Diagram**
+
 We can see that the final class diagram looks like a trimmed down version of the project 5 class diagram. And that is because it is. Many of the classes such as the SceneChanger, DataBaseHandler, SettingsController, Property, and the extra .fxml files weren't needed. In fact most of the .fxml files were excluded from our Project 6 because it didn't give us enough flexibility to handle the visualizations that we wanted.
 
 As such Kelsey took Project 6 and slimmed it down to the version now. Now there is one MediaPlayer.fxml that handles the visualizations of the main page. This includes the placement of the bars, visualizer, buttons, etc. In addition to handling the styling of this page.
@@ -71,7 +77,7 @@ There is also a built .jar file **AudioViz.jar** which can be executed with the 
 
 Where the ${PATH_TO_FX} is your own path to the JavaFX lib folder.
 
-## MIDPOINT UPDATE [DEPRECATED]
+# MIDPOINT UPDATE [DEPRECATED]
 
 ### Status Summary
 
